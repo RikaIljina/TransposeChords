@@ -72,23 +72,3 @@ function transpose() {
     offset > 0 ? "+" : ""
   }${offset}`;
 }
-
-
-/* list (C D E F G A H )
-
-index (A) = list.indexOf(A) = 5
-
-offset = 0
-
-up -> offset = (offset + 1) % 7
-down -> offset = (offset - 1) % 7
-
-output text = 
-	if offset >= 0	
-	list((index(A) + offset) % 7)
-	else
-	list((index(A) + 7 + offset) % 7)
-
-button text = offset
- */
-
