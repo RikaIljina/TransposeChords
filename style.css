@@ -52,7 +52,7 @@ body {
     margin: auto;
     padding: 20px;
     margin-top: 15px;
-    border-radius: 3px;
+    border-radius: 0px 30px;
     word-spacing: 0.3em;
 
 }
@@ -62,7 +62,7 @@ body {
     color: #F2F2F2;
     font-size: 1.7em;
     border-style: none;
-    border-radius: 3px;
+    border-radius: 0px 30px;
     text-align: center;
     width: 300px;
     padding-top: 30px;
