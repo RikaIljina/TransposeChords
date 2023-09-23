@@ -105,7 +105,7 @@ textarea {
     width: 100vw;
     max-width: 500px;
     font-size: 1.5em;
-    transition: padding 0.3s 0.2s ease;
+    /* transition: padding 0.3s 0.2s ease; */
 }
 
 @media screen and (max-width: 1080px) {
@@ -168,8 +168,9 @@ textarea {
 @media screen and (max-width: 750px) {
     textarea {
         padding: 10px 10px;
-        width: 60vw;
-        max-width: 230px;
+        width: 50vw;
+        height: 180px;    
+        max-width: 50vw;
         font-size: 1.3em;
  
     }
@@ -194,11 +195,12 @@ textarea {
 
     .transpose-first {
         font-size: 1em;
-        width: 140px;
+        width: 120px;
         padding-top: 30px;
         padding-bottom: 30px;
-        margin-right: 0px;
+        margin-left: 10px;
         margin-top: 5px;
+
 
     }
 }
