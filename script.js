@@ -30,19 +30,33 @@ document
   .addEventListener("click", transpose_down);
 document
   .getElementById("chord-entry")
-  .addEventListener("change", chords_entered);
+  .addEventListener("change", resetResult);
 document.getElementById("save-suffix").addEventListener("click", saveSuffix);
 
 function focusModal() {
   $("#suffix-modal").on("shown.bs.modal", function () {
     $(this).find("#suffix-input").focus();
   });
+  // Get the input field
+var input = document.getElementById("suffix-input");
+
+// Execute a function when the user presses a key on the keyboard
+input.addEventListener("keypress", function(event) {
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("save-suffix").click();
+  }
+});
 }
 
 function saveSuffix() {
   newSuffix = document.getElementById("suffix-input").value.trim();
   if (
     newSuffix === "" ||
+    newSuffix.includes(' ') ||
     checklist.includes(newSuffix) ||
     checklist.length == 10
   ) {
@@ -68,13 +82,16 @@ function addToTable(key, suffix) {
   let col1 = document.createElement("td");
   let col2 = document.createElement("td");
   let col1Text = document.createTextNode(suffix);
+  col1.style.color = "dimgrey";
+  col1.style.fontWeight = "bold";
 
-  let delButton = document.createElement("button");
-  delButton.setAttribute("class", "btn btn-sm btn-outline-danger");
+  let delButton = document.createElement("div");
   delButton.type = "button";
+  delButton.role = "button";
   delButton.value = "delete";
+  delButton.style.cursor = "pointer";
   delButton.onclick = deleteSuffix;
-  delButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+  delButton.innerHTML = '<i id="trash" class="fa fa-trash" aria-hidden="true"></i>';
 
   col1.appendChild(col1Text);
   col2.appendChild(delButton);
@@ -82,19 +99,19 @@ function addToTable(key, suffix) {
   newRow.appendChild(col2);
   newRow.setAttribute("id", key);
   document.getElementById("suffix-list").appendChild(newRow);
-  chords_entered();
+  resetResult();
 }
 
 function deleteSuffix() {
   let currentId = this.parentNode.parentNode.getAttribute("id");
   delete chordDict[currentId];
-  chords_entered();
+  resetResult();
   document.getElementById("suffix-input").value = "";
   document.getElementById("suffix-input").focus();
   document.getElementById(currentId).remove();
 }
 
-function chords_entered() {
+function resetResult() {
   document.getElementById("result").textContent =
     document.getElementById("chord-entry").value;
   document.getElementById("transposed-by").innerHTML = "0";
