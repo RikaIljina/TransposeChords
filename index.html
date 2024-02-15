@@ -11,7 +11,8 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -41,7 +42,7 @@
                         <li><i class="fa fa-check" aria-hidden="true"></i> min6 chords (Cmin6 or Cm6 ...)</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> maj6 chords (Cmaj6 C#maj6 ...)</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> <mark><a href="/" data-toggle="modal"
-                                    data-target="#suffix-modal">... or add a custom suffix!</a></mark></li>
+                                    data-target="#suffix-modal" onclick="focusModal()">... or add a custom suffix!</a></mark></li>
                     </ul>
                 </div>
             </div>
@@ -60,18 +61,21 @@
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
-
                             <div class="form-group suffix">
                                 <label for="suffix-input">Suffix:</label>
-                                <input type="text" class="form-control" name="suffix-input" id="suffix-input"
-                                    aria-describedby="helpId" placeholder="e.g. sus2">
+                                <div class="d-flex flex-row">
+                                    <input type="text" class="form-control" name="suffix-input" id="suffix-input"
+                                        aria-describedby="helpId" placeholder="e.g. sus2">
+                                    <button type="button" class="btn btn-success ml-1" id="save-suffix">Add</button>
+                                </div>
                                 <small id="helpId" class="form-text text-muted">Help text</small>
                             </div>
+
                             <div id="table-div">
                                 <table class="table" id="result-table">
                                     <thead>
                                         <tr>
-                                            <th>Added suffix</th>
+                                            <th>Added suffixes</th>
                                             <th>Remove</th>
                                         </tr>
                                     </thead>
@@ -83,14 +87,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="save-suffix">Add</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
-    
+
 
         <section>
             <h3>Enter chords here:</h3>
@@ -120,11 +123,7 @@
                 <p id="result">RESULT</p>
             </div>
     </div>
-    <script>
-        $('#suffix-modal').on('shown.bs.modal', function () {
-            $('#suffix-input').focus();
-        })
-    </script>
+
     <script>
         document.getElementById("chord-entry").focus()
     </script>

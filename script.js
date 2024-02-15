@@ -1,4 +1,3 @@
-
 var offset = 0;
 var last_button_clicked = "up";
 var counter = 0;
@@ -23,10 +22,7 @@ var chord_list_base = ["e", "f", "f#", "g", "g#", "a", "b", "h", "c", "c#", "d",
 var len = 12;
 var trans_pos_max = 11;
 var listLen = 13;
-
-$('#suffix-modal').on('shown.bs.modal', function () {
-    $(this).find('#suffix-input').focus();
-})
+let checklist = [];
 
 document.getElementById("transpose-up").addEventListener("click", transpose_up);
 document
@@ -37,14 +33,24 @@ document
   .addEventListener("change", chords_entered);
 document.getElementById("save-suffix").addEventListener("click", saveSuffix);
 
+function focusModal() {
+  $("#suffix-modal").on("shown.bs.modal", function () {
+    $(this).find("#suffix-input").focus();
+  });
+}
 
 function saveSuffix() {
   newSuffix = document.getElementById("suffix-input").value.trim();
-  if (newSuffix === '' || newSuffix in chordDict) {
-    document.getElementById('suffix-input').value = "";
-    document.getElementById('suffix-input').focus();
+  if (
+    newSuffix === "" ||
+    checklist.includes(newSuffix) ||
+    checklist.length == 10
+  ) {
+    document.getElementById("suffix-input").value = "";
+    document.getElementById("suffix-input").focus();
     return;
   }
+  checklist.push(newSuffix);
   chords_temp = chord_list_base.slice();
   for (i = 0; i < listLen; i++) {
     chords_temp[i] = chords_temp[i] + newSuffix;
@@ -53,40 +59,39 @@ function saveSuffix() {
   nextKey = `custom${nextIdx}`;
   chordDict[nextKey] = chords_temp.slice();
   addToTable(nextKey, newSuffix);
-  document.getElementById('suffix-input').value = "";
-  document.getElementById('suffix-input').focus();
+  document.getElementById("suffix-input").value = "";
+  document.getElementById("suffix-input").focus();
 }
 
 function addToTable(key, suffix) {
-    let newRow = document.createElement('tr');
-    let col1 = document.createElement('td');
-    let col2 = document.createElement('td');
-    let col1Text = document.createTextNode(suffix);
+  let newRow = document.createElement("tr");
+  let col1 = document.createElement("td");
+  let col2 = document.createElement("td");
+  let col1Text = document.createTextNode(suffix);
 
-    let delButton = document.createElement('button');
-    delButton.setAttribute('class', 'btn btn-sm btn-outline-danger');
-    delButton.type = 'button';
-    delButton.value = 'delete';
-    delButton.onclick = deleteSuffix;
-    delButton.innerHTML = '<span style="font-size: 1.3rem;"><i class="fa fa-trash" aria-hidden="true"></i></span>'
+  let delButton = document.createElement("button");
+  delButton.setAttribute("class", "btn btn-sm btn-outline-danger");
+  delButton.type = "button";
+  delButton.value = "delete";
+  delButton.onclick = deleteSuffix;
+  delButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
 
-    col1.appendChild(col1Text);
-    col2.appendChild(delButton);
-    newRow.appendChild(col1);
-    newRow.appendChild(col2);
-    newRow.setAttribute('id', key);
-    document.getElementById("suffix-list").appendChild(newRow);
-    chords_entered();
+  col1.appendChild(col1Text);
+  col2.appendChild(delButton);
+  newRow.appendChild(col1);
+  newRow.appendChild(col2);
+  newRow.setAttribute("id", key);
+  document.getElementById("suffix-list").appendChild(newRow);
+  chords_entered();
 }
 
 function deleteSuffix() {
-    let currentId = this.parentNode.parentNode.getAttribute('id');
-    delete chordDict[currentId];
-    chords_entered();
-    document.getElementById('suffix-input').value = "";
-    document.getElementById('suffix-input').focus();
-    document.getElementById(currentId).remove();
-
+  let currentId = this.parentNode.parentNode.getAttribute("id");
+  delete chordDict[currentId];
+  chords_entered();
+  document.getElementById("suffix-input").value = "";
+  document.getElementById("suffix-input").focus();
+  document.getElementById(currentId).remove();
 }
 
 function chords_entered() {
