@@ -1,8 +1,3 @@
-var offset = 0;
-var last_button_clicked = "up";
-var counter = 0;
-var operator = "+";
-
 // prettier-ignore
 const chordDict = {
     'moll': [ "em", "fm", "f#m", "gm", "g#m", "am", "bm", "hm", "cm", "c#m", "dm", "d#m", "em",],
@@ -17,20 +12,16 @@ const chordDict = {
     'maj6': [ "emaj6", "fmaj6", "f#maj6", "gmaj6", "g#maj6", "amaj6", "bmaj6", "hmaj6", "cmaj6", "c#maj6", "dmaj6", "d#maj6", "emaj6", ],
 };
 // prettier-ignore
-var chord_list_base = ["e", "f", "f#", "g", "g#", "a", "b", "h", "c", "c#", "d", "d#", "e"];
+const chordListBase = ["e", "f", "f#", "g", "g#", "a", "b", "h", "c", "c#", "d", "d#", "e"];
 
-var len = 12;
-var trans_pos_max = 11;
-var listLen = 13;
+let offset = 0;
 let checklist = [];
 
-document.getElementById("transpose-up").addEventListener("click", transpose_up);
+document.getElementById("transpose-up").addEventListener("click", transposeUp);
 document
   .getElementById("transpose-down")
-  .addEventListener("click", transpose_down);
-document
-  .getElementById("chord-entry")
-  .addEventListener("change", resetResult);
+  .addEventListener("click", transposeDown);
+document.getElementById("chord-entry").addEventListener("change", resetResult);
 document.getElementById("save-suffix").addEventListener("click", saveSuffix);
 
 function focusModal() {
@@ -38,25 +29,26 @@ function focusModal() {
     $(this).find("#suffix-input").focus();
   });
   // Get the input field
-var input = document.getElementById("suffix-input");
+  const input = document.getElementById("suffix-input");
 
-// Execute a function when the user presses a key on the keyboard
-input.addEventListener("keypress", function(event) {
-  // If the user presses the "Enter" key on the keyboard
-  if (event.key === "Enter") {
-    // Cancel the default action, if needed
-    event.preventDefault();
-    // Trigger the button element with a click
-    document.getElementById("save-suffix").click();
-  }
-});
+  // Execute a function when the user presses a key on the keyboard
+  input.addEventListener("keypress", function (event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      document.getElementById("save-suffix").click();
+    }
+  });
 }
 
 function saveSuffix() {
+  let listLen = 13;
   newSuffix = document.getElementById("suffix-input").value.trim();
   if (
     newSuffix === "" ||
-    newSuffix.includes(' ') ||
+    newSuffix.includes(" ") ||
     checklist.includes(newSuffix) ||
     checklist.length == 10
   ) {
@@ -65,7 +57,7 @@ function saveSuffix() {
     return;
   }
   checklist.push(newSuffix);
-  chords_temp = chord_list_base.slice();
+  chords_temp = chordListBase.slice();
   for (i = 0; i < listLen; i++) {
     chords_temp[i] = chords_temp[i] + newSuffix;
   }
@@ -91,7 +83,8 @@ function addToTable(key, suffix) {
   delButton.value = "delete";
   delButton.style.cursor = "pointer";
   delButton.onclick = deleteSuffix;
-  delButton.innerHTML = '<i id="trash" class="fa fa-trash" aria-hidden="true"></i>';
+  delButton.innerHTML =
+    '<i id="trash" class="fa fa-trash" aria-hidden="true"></i>';
 
   col1.appendChild(col1Text);
   col2.appendChild(delButton);
@@ -118,59 +111,65 @@ function resetResult() {
   offset = 0;
 }
 
-function transpose_up() {
+function parseEntry() {
+
+}
+
+function transposeUp() {
+  let len = 12;
   offset = (offset + 1) % len;
-  transpose();
+  transpose(len);
 }
 
-function transpose_down() {
+function transposeDown() {
+  let len = 12;
   offset = (offset - 1) % len;
-  transpose();
+  transpose(len);
 }
 
-function transpose() {
-  var result = "";
-  let chord_list = [];
-  let sep_chords = [];
-  var raw_chords = document.getElementById("chord-entry").value;
-  var clean_chords = raw_chords.split(/\n|\r/g); // split the whole text into lines by linebreak
+function transpose(len) {
+  let result = "";
+  let foundChordList = [];
+  let inputCharsList = [];
+  let rawInput = document.getElementById("chord-entry").value;
+  let inputRows = rawInput.split(/\n|\r/g); // split the whole text into lines by linebreak
 
-  for (j = 0; j < clean_chords.length; j++) {
-    sep_chords = clean_chords[j]
+  for (j = 0; j < inputRows.length; j++) {
+    inputCharsList = inputRows[j]
       .trim()
-      .replace("/", " / ")
+      .replace(/\//g, " / ")
       .replace(/\s+/g, " ")
       .split(" "); // split the lines by spaces, remove all redundant spaces AND linebreaks
 
-    for (ch of sep_chords) {
-      chord_list = [];
+    for (ch of inputCharsList) {
+      foundChordList = [];
       for (value of Object.values(chordDict)) {
         if (value.includes(ch.toLowerCase())) {
-          chord_list = value.slice();
+          foundChordList = value.slice();
           break;
         }
       }
-      if (chord_list.length === 0) {
+      if (foundChordList.length === 0) {
         result += `${ch} `;
         continue;
       }
       ch = ch.toLowerCase();
 
       temp_result =
-        chord_list[
-          (chord_list.indexOf(ch) + offset < 0
-            ? (chord_list.indexOf(ch) + offset + len) % len
-            : chord_list.indexOf(ch) + offset) % len
+        foundChordList[
+          (foundChordList.indexOf(ch) + offset < 0
+            ? (foundChordList.indexOf(ch) + offset + len) % len
+            : foundChordList.indexOf(ch) + offset) % len
         ];
       result +=
         '<span style="color: green;"><b>' +
         temp_result.charAt(0).toUpperCase() +
         temp_result.slice(1) +
-        " </b></span>";
+        "</b></span> ";
     }
     result += "<br>";
   }
-
+  result = result.replace(/\s\/\s/g, "/");
   document.getElementById("result").innerHTML = result;
 
   document.getElementById("transposed-by").innerHTML = `${
