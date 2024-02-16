@@ -79,3 +79,13 @@ ul {
   color: green;
   cursor: pointer;
 }
+
+#bottom-result {
+  position: relative;
+}
+
+#copy-result {
+  position: absolute;
+  top: 0;
+  right: 3px;
+}

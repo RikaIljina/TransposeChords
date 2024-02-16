@@ -29,6 +29,7 @@ document
 document.getElementById("chord-entry").addEventListener("input", resetResult);
 document.getElementById("save-suffix").addEventListener("click", saveSuffix);
 document.getElementById("parse-entry").addEventListener("click", parseEntry);
+document.getElementById("copy-result").addEventListener("click", copyResult);
 
 function focusModal() {
   $("#suffix-modal").on("shown.bs.modal", function () {
@@ -245,3 +246,19 @@ function transpose(len) {
 }
 
 // TODO: add copy function
+function copyResult() {
+  let copyText = document.getElementById("result").innerHTML;
+  const type = "text/html";
+  const text = copyText;
+  const blob = new Blob([text], { type });
+  const data = [new ClipboardItem({ [type]: blob })];
+  // Select the text field
+  // copyText.textContent.select();
+  // copyText.setSelectionRange(0, 99999); // For mobile devices
+
+   // Copy the text inside the text field
+  navigator.clipboard.write(data);
+
+  // Alert the copied text
+  alert("Copied!");
+}
