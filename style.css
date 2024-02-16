@@ -30,7 +30,8 @@ ul {
 }
 
 .btn-cont {
-  height: 300px;
+  height: fit-content;
+  margin-bottom: 1.5rem;
 }
 
 .btn-sm {
@@ -55,8 +56,8 @@ ul {
 #transpose-up,
 #transpose-down {
   text-transform: uppercase;
-  height: 6rem;
-  font-size: 2rem;
+  height: 5rem;
+  font-size: 1.2rem;
 }
 
 #transposed-by {
@@ -95,6 +96,24 @@ footer {
   position: relative;
 }
 
-#toast, #toast>div {
+#toast,
+#toast > div {
   color: white;
+}
+
+h1 {
+  font-size: 1.7rem;
+}
+
+@media screen and (min-width: 500px) {
+  h1 {
+    font-size: 2.4rem;
+  }
+
+  #transpose-up,
+  #transpose-down {
+    text-transform: uppercase;
+    height: 6rem;
+    font-size: 1.4rem;
+  }
 }
