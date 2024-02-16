@@ -16,13 +16,19 @@ const chordListBase = ["e", "f", "f#", "g", "g#", "a", "b", "h", "c", "c#", "d",
 
 let offset = 0;
 let checklist = [];
+let inputRows = [];
+let coordDict = {};
+
+document.getElementById("transpose-up").disabled = true;
+document.getElementById("transpose-down").disabled = true;
 
 document.getElementById("transpose-up").addEventListener("click", transposeUp);
 document
   .getElementById("transpose-down")
   .addEventListener("click", transposeDown);
-document.getElementById("chord-entry").addEventListener("change", resetResult);
+document.getElementById("chord-entry").addEventListener("input", resetResult);
 document.getElementById("save-suffix").addEventListener("click", saveSuffix);
+document.getElementById("parse-entry").addEventListener("click", parseEntry);
 
 function focusModal() {
   $("#suffix-modal").on("shown.bs.modal", function () {
@@ -109,10 +115,85 @@ function resetResult() {
     document.getElementById("chord-entry").value;
   document.getElementById("transposed-by").innerHTML = "0";
   offset = 0;
+  checklist = [];
+  inputRows = [];
+  coordDict = {};
+  document.getElementById("transpose-up").disabled = true;
+  document.getElementById("transpose-down").disabled = true;
 }
 
 function parseEntry() {
+  resetResult();
 
+  let coords = [];
+  let result = "";
+  let foundChordList = [];
+  let inputCharsList = [];
+  let rawInput = document.getElementById("chord-entry").value;
+  if (!rawInput) {
+    return;
+  }
+  // split the whole text into lines by line break
+  inputRows = rawInput.split(/\n|\r/g); // initial user entry, split into rows and chars in the next loop
+
+  for (j = 0; j < inputRows.length; j++) {
+    // split the lines by spaces, remove all redundant spaces AND line breaks
+    inputCharsList = inputRows[j]
+      .trim()
+      .replace(/\//g, " / ")
+      .replace(/\s+/g, " ")
+      .split(" ");
+    inputRows[j] = inputCharsList;
+    // Check each list element to see if it's in the chord lists
+    for (let [idx, ch] of inputCharsList.entries()) {
+      foundChordList = [];
+      for (value of Object.values(chordDict)) {
+        if (value.includes(ch.toLowerCase())) {
+          // If yes: remember the chord list
+          foundChordList = value.slice();
+          coords = [j, idx];
+          coordDict[coords] = foundChordList;
+          break;
+        }
+      }
+      if (foundChordList.length === 0) {
+        result += `${ch} `;
+        continue;
+      }
+      result +=
+        `<span class="parsed-chord" id="${coords[0]}-${coords[1]}" style="color: green;">` +
+        ch.charAt(0).toUpperCase() +
+        ch.slice(1) +
+        "</span> ";
+    }
+    result += "<br>";
+  }
+  document.getElementById("result").innerHTML = result;
+
+  // Make all found chords clickable to allow user to de-select some
+  for (el of document.querySelectorAll(".parsed-chord")) {
+    let coordsStr = el.getAttribute("id").split("-");
+    let coords = [parseInt(coordsStr[0]), parseInt(coordsStr[1])];
+    el.coordDict = coordDict;
+    el.coords = coords.slice();
+    el.chordList = coordDict[coords].slice(); // Passing on object reference directly to element
+    el.addEventListener("click", toggleChord);
+  }
+
+  document.querySelector("footer").scrollIntoView({ behavior: "smooth" });
+  document.getElementById("transpose-up").disabled = false;
+  document.getElementById("transpose-down").disabled = false;
+}
+
+// Toggle transpose logic for this chord
+function toggleChord() {
+  if (this.style.color === "green") {
+    this.style.color = "initial";
+    delete this.coordDict[this.coords];
+  } else {
+    this.style.color = "green";
+    this.coordDict[this.coords] = this.chordList;
+  }
 }
 
 function transposeUp() {
@@ -129,43 +210,29 @@ function transposeDown() {
 
 function transpose(len) {
   let result = "";
-  let foundChordList = [];
-  let inputCharsList = [];
-  let rawInput = document.getElementById("chord-entry").value;
-  let inputRows = rawInput.split(/\n|\r/g); // split the whole text into lines by linebreak
-
+  let temp_result = "";
   for (j = 0; j < inputRows.length; j++) {
-    inputCharsList = inputRows[j]
-      .trim()
-      .replace(/\//g, " / ")
-      .replace(/\s+/g, " ")
-      .split(" "); // split the lines by spaces, remove all redundant spaces AND linebreaks
+    for (let [idx, ch] of inputRows[j].entries()) {
+      // are the coords of this character in the dict?
+      if ([j, idx] in coordDict) {
+        let foundChordList = coordDict[[j, idx]];
+        ch = ch.toLowerCase();
 
-    for (ch of inputCharsList) {
-      foundChordList = [];
-      for (value of Object.values(chordDict)) {
-        if (value.includes(ch.toLowerCase())) {
-          foundChordList = value.slice();
-          break;
-        }
-      }
-      if (foundChordList.length === 0) {
+        temp_result =
+          foundChordList[
+            (foundChordList.indexOf(ch) + offset < 0
+              ? (foundChordList.indexOf(ch) + offset + len) % len
+              : foundChordList.indexOf(ch) + offset) % len
+          ];
+        result +=
+          '<span style="color: green;"><b>' +
+          temp_result.charAt(0).toUpperCase() +
+          temp_result.slice(1) +
+          "</b></span> ";
+      } else {
         result += `${ch} `;
         continue;
       }
-      ch = ch.toLowerCase();
-
-      temp_result =
-        foundChordList[
-          (foundChordList.indexOf(ch) + offset < 0
-            ? (foundChordList.indexOf(ch) + offset + len) % len
-            : foundChordList.indexOf(ch) + offset) % len
-        ];
-      result +=
-        '<span style="color: green;"><b>' +
-        temp_result.charAt(0).toUpperCase() +
-        temp_result.slice(1) +
-        "</b></span> ";
     }
     result += "<br>";
   }
@@ -176,3 +243,5 @@ function transpose(len) {
     offset > 0 ? "+" : ""
   }${offset}`;
 }
+
+// TODO: add copy function

@@ -42,12 +42,13 @@
                         <li><i class="fa fa-check" aria-hidden="true"></i> min6 chords (Cmin6 or Cm6 ...)</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> maj6 chords (Cmaj6 C#maj6 ...)</li>
                         <li><i class="fa fa-check" aria-hidden="true"></i> <mark><a href="/" data-toggle="modal"
-                                    data-target="#suffix-modal" onclick="focusModal()">... or add a custom suffix!</a></mark></li>
+                                    data-target="#suffix-modal" onclick="focusModal()">... or add a custom
+                                    suffix!</a></mark></li>
                     </ul>
                 </div>
             </div>
         </section>
-
+        
         <!-- Modal -->
         <div class="modal fade" id="suffix-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
             aria-hidden="true">
@@ -108,6 +109,7 @@
                 <div class="col-12 col-md-6 justify-content-around">
                     <div
                         class="btn-cont my-auto d-flex flex-column justify-content-around align-items-center align-self-stretch">
+                        <button name="parse-entry" id="parse-entry" class="btn btn-primary align-self-stretch my-1" href="#" role="button">Parse</button>
                         <button name="transpose-up" id="transpose-up" class="btn btn-info align-self-stretch my-1"
                             href="#" role="button">Transpose up</button>
                         <button name="transpose-down" id="transpose-down" class="btn btn-info align-self-stretch my-1"
@@ -119,7 +121,11 @@
                 <div id="transposed-by">0</div>
                 <p id="result">RESULT</p>
             </div>
+            <footer>
+                <p class="jumbotron text-center">2024, created by Vasilika Schnitzer</p>
+            </footer>
     </div>
+
 
     <script>
         document.getElementById("chord-entry").focus()
