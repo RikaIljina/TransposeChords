@@ -30,11 +30,20 @@ document.getElementById("chord-entry").addEventListener("input", resetResult);
 document.getElementById("save-suffix").addEventListener("click", saveSuffix);
 document.getElementById("parse-entry").addEventListener("click", parseEntry);
 document.getElementById("copy-result").addEventListener("click", copyResult);
-//$('.toast').toast({animation: true, autohide: false, delay: 5000});
-document.getElementById('#toast').toast();
 
+document
+  .getElementById("suffix-modal")
+  .addEventListener("keydown", function (e) {
+    if (e.key == "Escape") {
+      updateCustoms();
+    }
+  });
+
+document.getElementById("#toast").toast();
 
 function focusModal() {
+  const controller = new AbortController();
+  const { signal } = controller;
   $("#suffix-modal").on("shown.bs.modal", function () {
     $(this).find("#suffix-input").focus();
   });
@@ -42,15 +51,20 @@ function focusModal() {
   const input = document.getElementById("suffix-input");
 
   // Execute a function when the user presses a key on the keyboard
-  input.addEventListener("keypress", function (event) {
-    // If the user presses the "Enter" key on the keyboard
-    if (event.key === "Enter") {
-      // Cancel the default action, if needed
-      event.preventDefault();
-      // Trigger the button element with a click
-      document.getElementById("save-suffix").click();
-    }
-  });
+  input.addEventListener(
+    "keypress",
+    function (event) {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("save-suffix").click();
+      }
+    },
+    { signal }
+  );
+  input.controller = controller;
 }
 
 function saveSuffix() {
@@ -106,6 +120,10 @@ function addToTable(key, suffix) {
 }
 
 function deleteSuffix() {
+  checklist.splice(
+    checklist.indexOf(this.parentNode.parentNode.textContent),
+    1
+  );
   let currentId = this.parentNode.parentNode.getAttribute("id");
   delete chordDict[currentId];
   resetResult();
@@ -119,7 +137,6 @@ function resetResult() {
     document.getElementById("chord-entry").value;
   document.getElementById("transposed-by").innerHTML = "0";
   offset = 0;
-  checklist = [];
   inputRows = [];
   coordDict = {};
   document.getElementById("transpose-up").disabled = true;
@@ -127,14 +144,17 @@ function resetResult() {
 }
 
 function updateCustoms() {
+  document.getElementById("suffix-input").value = "";
   let result = [];
   tags = document.getElementsByTagName("tr");
   for (let i = 1; i < tags.length; i++) {
     result.push(tags[i].children[0].innerText);
   }
-  let res = result.join(", ");
-  document.getElementById("custom-suffixes").innerText = res;
+  let res = "<mark>" + result.join(", ") + "</mark>";
+  document.getElementById("custom-suffixes").innerHTML = res;
   // document.getElementById("suffix-input").removeEventListener("keypress");
+
+  document.getElementById("suffix-input").controller.abort();
 }
 
 function parseEntry() {
@@ -214,14 +234,18 @@ function toggleChord() {
 function transposeUp() {
   let len = 12;
   offset = (offset + 1) % len;
-  document.querySelector("#transpose-up").scrollIntoView({ behavior: "smooth" });
+  document
+    .querySelector("#transpose-up")
+    .scrollIntoView({ behavior: "smooth" });
   transpose(len);
 }
 
 function transposeDown() {
   let len = 12;
   offset = (offset - 1) % len;
-  document.querySelector("#transpose-up").scrollIntoView({ behavior: "smooth" });
+  document
+    .querySelector("#transpose-up")
+    .scrollIntoView({ behavior: "smooth" });
   transpose(len);
 }
 
@@ -269,11 +293,12 @@ function copyResult() {
   const text = document.getElementById("result").innerHTML;
   const blob = new Blob([text], { type: type });
   const blobPlain = new Blob([plainText], { type: typePlain });
-  const data = [new ClipboardItem({ 
-    [type]: blob,
-    [typePlain]: blobPlain
-
-  })];
+  const data = [
+    new ClipboardItem({
+      [type]: blob,
+      [typePlain]: blobPlain,
+    }),
+  ];
   // Select the text field
   // copyText.textContent.select();
   // copyText.setSelectionRange(0, 99999); // For mobile devices
@@ -285,7 +310,7 @@ function copyResult() {
       navigator.clipboard
         .write(data)
         .then(() => {
-         $('#toast').toast('show');
+          $("#toast").toast("show");
         })
         .catch(() => {
           alert("something went wrong");
@@ -298,7 +323,6 @@ function copyResult() {
   };
 
   copyContent();
-
 
   // Alert the copied text
 }

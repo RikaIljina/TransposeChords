@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    
-        <title>Transponator - transpose chords</title>
-    </head>
+
+    <title>Transponator - transpose chords</title>
+</head>
 
 <body>
     <div class="container mt-3">
@@ -24,9 +24,9 @@
         </section>
         <section class="jumbotron">
             <p>
-                <ol>
-                    <li> Enter chords space-separated (e.g. Em G# D7) or paste in the entire song lyric with the chords.
-                Upper-/lowercase is irrelevant.</li>
+            <ol>
+                <li> Enter space-separated chords (e.g. Em G# D7) or paste in the entire song lyric with the chords.
+                    Upper-/lowercase is irrelevant.</li>
                 <li> If needed, add custom chord suffixes.</li>
                 <li> Click on "Parse" to highlight all valid chords.</li>
                 <li> If characters have been falsely highlighted as chords, click on them to de-select them.</li>
@@ -59,7 +59,7 @@
             </div>
             <div>
                 <h6>Custom suffixes:</h4>
-                    <p id="custom-suffixes"></p>
+                    <div id="custom-suffixes"></div>
             </div>
         </section>
 
@@ -80,10 +80,10 @@
                                 <label for="suffix-input">Suffix:</label>
                                 <div class="d-flex flex-row">
                                     <input type="text" class="form-control" name="suffix-input" id="suffix-input"
-                                        aria-describedby="helpId" placeholder="e.g. sus2">
+                                        aria-describedby="helpId" placeholder="e.g. sus2" maxlength="10">
                                     <button type="button" class="btn btn-success ml-1" id="save-suffix">Add</button>
                                 </div>
-                                <small id="helpId" class="form-text text-muted">Help text</small>
+                                <small id="helpId" class="form-text text-muted">Max 10 suffixes, max 10 characters each, no spaces</small>
                             </div>
 
                             <div id="table-div">
@@ -117,7 +117,8 @@
                             <label for="chord-entry">
                                 <p class="d-none">Enter chords here:</p>
                             </label>
-                            <textarea class="form-control focus-ring rounded-left" id="chord-entry" rows="7"></textarea>
+                            <textarea class="form-control focus-ring rounded-left" id="chord-entry" rows="7" placeholder="Am    Em 
+Hello World..."></textarea>
                         </div>
                     </form>
                 </div>
@@ -141,11 +142,13 @@
 
             </div>
 
-           
+
             <footer>
                 <p class="jumbotron text-center">2024, created by Vasilika Schnitzer</p>
 
-                <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; bottom: 0; right: 10px;" data-animation="true" data-autohide="true" data-delay="3000">
+                <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                    style="position: fixed; bottom: 0; right: 10px;" data-animation="true" data-autohide="true"
+                    data-delay="3000">
                     <div class="toast-header bg-success">
                         <strong class="mr-auto">Copy successful</strong>
                         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -156,7 +159,7 @@
                         The transposed chords have been copied!
                     </div>
                 </div>
-    
+
             </footer>
     </div>
 
