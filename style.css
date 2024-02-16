@@ -10,6 +10,7 @@ ul {
 #chord-entry {
   background: #e3e3e0;
   color: #000000;
+  min-height: 18rem;
   padding: 20px 20px;
   font-size: 1.5em;
 }
@@ -88,4 +89,12 @@ ul {
   position: absolute;
   top: 0;
   right: 3px;
+}
+
+footer {
+  position: relative;
+}
+
+#toast, #toast>div {
+  color: white;
 }

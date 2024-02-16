@@ -30,6 +30,9 @@ document.getElementById("chord-entry").addEventListener("input", resetResult);
 document.getElementById("save-suffix").addEventListener("click", saveSuffix);
 document.getElementById("parse-entry").addEventListener("click", parseEntry);
 document.getElementById("copy-result").addEventListener("click", copyResult);
+//$('.toast').toast({animation: true, autohide: false, delay: 5000});
+document.getElementById('#toast').toast();
+
 
 function focusModal() {
   $("#suffix-modal").on("shown.bs.modal", function () {
@@ -123,6 +126,17 @@ function resetResult() {
   document.getElementById("transpose-down").disabled = true;
 }
 
+function updateCustoms() {
+  let result = [];
+  tags = document.getElementsByTagName("tr");
+  for (let i = 1; i < tags.length; i++) {
+    result.push(tags[i].children[0].innerText);
+  }
+  let res = result.join(", ");
+  document.getElementById("custom-suffixes").innerText = res;
+  // document.getElementById("suffix-input").removeEventListener("keypress");
+}
+
 function parseEntry() {
   resetResult();
 
@@ -181,7 +195,7 @@ function parseEntry() {
     el.addEventListener("click", toggleChord);
   }
 
-  document.querySelector("footer").scrollIntoView({ behavior: "smooth" });
+  document.querySelector("#result").scrollIntoView({ behavior: "smooth" });
   document.getElementById("transpose-up").disabled = false;
   document.getElementById("transpose-down").disabled = false;
 }
@@ -200,12 +214,14 @@ function toggleChord() {
 function transposeUp() {
   let len = 12;
   offset = (offset + 1) % len;
+  document.querySelector("#transpose-up").scrollIntoView({ behavior: "smooth" });
   transpose(len);
 }
 
 function transposeDown() {
   let len = 12;
   offset = (offset - 1) % len;
+  document.querySelector("#transpose-up").scrollIntoView({ behavior: "smooth" });
   transpose(len);
 }
 
@@ -247,18 +263,42 @@ function transpose(len) {
 
 // TODO: add copy function
 function copyResult() {
-  let copyText = document.getElementById("result").innerHTML;
+  let plainText = document.getElementById("result").innerText;
   const type = "text/html";
-  const text = copyText;
-  const blob = new Blob([text], { type });
-  const data = [new ClipboardItem({ [type]: blob })];
+  const typePlain = "text/plain";
+  const text = document.getElementById("result").innerHTML;
+  const blob = new Blob([text], { type: type });
+  const blobPlain = new Blob([plainText], { type: typePlain });
+  const data = [new ClipboardItem({ 
+    [type]: blob,
+    [typePlain]: blobPlain
+
+  })];
   // Select the text field
   // copyText.textContent.select();
   // copyText.setSelectionRange(0, 99999); // For mobile devices
 
-   // Copy the text inside the text field
-  navigator.clipboard.write(data);
+  // Copy the text inside the text field
+  //navigator.clipboard.write(data);
+  const copyContent = async () => {
+    try {
+      navigator.clipboard
+        .write(data)
+        .then(() => {
+         $('#toast').toast('show');
+        })
+        .catch(() => {
+          alert("something went wrong");
+        });
+
+      console.log("Content copied to clipboard");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
+
+  copyContent();
+
 
   // Alert the copied text
-  alert("Copied!");
 }

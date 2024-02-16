@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -13,7 +12,9 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-</head>
+    
+        <title>Transponator - transpose chords</title>
+    </head>
 
 <body>
     <div class="container mt-3">
@@ -22,8 +23,17 @@
             <p class="text-center">Transpose to your heart's desire</p>
         </section>
         <section class="jumbotron">
-            <p>Enter chords space-separated (e.g. Em G# D7) or paste in the entire song lyric with the chords.
-                Upper-/lowercase is irrelevant.<br>Supported chord types:
+            <p>
+                <ol>
+                    <li> Enter chords space-separated (e.g. Em G# D7) or paste in the entire song lyric with the chords.
+                Upper-/lowercase is irrelevant.</li>
+                <li> If needed, add custom chord suffixes.</li>
+                <li> Click on "Parse" to highlight all valid chords.</li>
+                <li> If characters have been falsely highlighted as chords, click on them to de-select them.</li>
+                <li> Click on "Transpose up/down".</li>
+                <li> Click the "Copy" button to copy the result.</li>
+            </ol>
+            Supported chord types:
             </p>
             <div class="row">
                 <div class="col-12 col-md-6">
@@ -47,8 +57,12 @@
                     </ul>
                 </div>
             </div>
+            <div>
+                <h6>Custom suffixes:</h4>
+                    <p id="custom-suffixes"></p>
+            </div>
         </section>
-        
+
         <!-- Modal -->
         <div class="modal fade" id="suffix-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
             aria-hidden="true">
@@ -87,14 +101,15 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Save & Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            onclick="updateCustoms()">Save & Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <section>
-            <h3>Enter chords here:</h3>
+            <h3>Enter your chords below:</h3>
             <div class="chord-transpo row align-items-center">
                 <div class="col-12 col-md-6">
                     <form>
@@ -109,7 +124,8 @@
                 <div class="col-12 col-md-6 justify-content-around">
                     <div
                         class="btn-cont my-auto d-flex flex-column justify-content-around align-items-center align-self-stretch">
-                        <button name="parse-entry" id="parse-entry" class="btn btn-primary align-self-stretch my-1" href="#" role="button">Parse</button>
+                        <button name="parse-entry" id="parse-entry" class="btn btn-primary align-self-stretch my-1"
+                            href="#" role="button">Parse</button>
                         <button name="transpose-up" id="transpose-up" class="btn btn-info align-self-stretch my-1"
                             href="#" role="button">Transpose up</button>
                         <button name="transpose-down" id="transpose-down" class="btn btn-info align-self-stretch my-1"
@@ -120,11 +136,27 @@
             <div class="jumbotron d-flex flex-column align-items-center" id="bottom-result">
                 <div id="transposed-by">0</div>
                 <p id="result">RESULT</p>
-                <button name="copy-result" id="copy-result" class="btn btn-warning my-1" href="#" role="button"><i class="fa fa-copy" aria-hidden="true"></i></button>
-                
+                <button name="copy-result" id="copy-result" class="btn btn-warning my-1" href="#" role="button"><i
+                        class="fa fa-copy" aria-hidden="true"></i></button>
+
             </div>
+
+           
             <footer>
                 <p class="jumbotron text-center">2024, created by Vasilika Schnitzer</p>
+
+                <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; bottom: 0; right: 10px;" data-animation="true" data-autohide="true" data-delay="3000">
+                    <div class="toast-header bg-success">
+                        <strong class="mr-auto">Copy successful</strong>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body bg-success">
+                        The transposed chords have been copied!
+                    </div>
+                </div>
+    
             </footer>
     </div>
 
@@ -135,9 +167,9 @@
     <!-- Optional JavaScript -->
     <script src="script.js"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
