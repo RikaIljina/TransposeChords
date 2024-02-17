@@ -1,3 +1,4 @@
+
 .jumbotron {
   background-color: rgb(191, 197, 197);
   padding: 1rem;
@@ -104,6 +105,8 @@ footer {
 h1 {
   font-size: 1.7rem;
 }
+
+
 
 @media screen and (min-width: 500px) {
   h1 {

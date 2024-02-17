@@ -19,8 +19,8 @@ let checklist = [];
 let inputRows = [];
 let coordDict = {};
 
-document.getElementById("transpose-up").disabled = true;
-document.getElementById("transpose-down").disabled = true;
+$("#transpose-up").attr("disabled", "true");
+$("#transpose-down").attr("disabled", "true");
 
 document.getElementById("transpose-up").addEventListener("click", transposeUp);
 document
@@ -69,7 +69,7 @@ function focusModal() {
 
 function saveSuffix() {
   let listLen = 13;
-  newSuffix = document.getElementById("suffix-input").value.trim();
+  newSuffix = document.getElementById("suffix-input").value.toLowerCase().trim();
   if (
     newSuffix === "" ||
     newSuffix.includes(" ") ||
@@ -150,9 +150,12 @@ function updateCustoms() {
   for (let i = 1; i < tags.length; i++) {
     result.push(tags[i].children[0].innerText);
   }
-  let res = "<mark>" + result.join(", ") + "</mark>";
+  if (!result.length) {
+    var res = "";
+  } else {
+    var res = "<mark>" + result.join(", ") + "</mark>";
+  }
   document.getElementById("custom-suffixes").innerHTML = res;
-  // document.getElementById("suffix-input").removeEventListener("keypress");
 
   document.getElementById("suffix-input").controller.abort();
 }
@@ -170,14 +173,12 @@ function parseEntry() {
   }
   // split the whole text into lines by line break
   inputRows = rawInput.split(/\n|\r/g); // initial user entry, split into rows and chars in the next loop
-
   for (j = 0; j < inputRows.length; j++) {
     // split the lines by spaces, remove all redundant spaces AND line breaks
-    inputCharsList = inputRows[j]
-      .trim()
-      .replace(/\//g, " / ")
-      .replace(/\s+/g, " ")
-      .split(" ");
+    inputCharsList = inputRows[j].replace(/\//g, " / ").split(/(\s+)/);
+      // .trim()
+      // .replace(/\//g, " / ")
+      // .split(" "); //       .replace(/\s+/g, " ")
     inputRows[j] = inputCharsList;
     // Check each list element to see if it's in the chord lists
     for (let [idx, ch] of inputCharsList.entries()) {
@@ -191,15 +192,16 @@ function parseEntry() {
           break;
         }
       }
+      ch = ch.replace(/\s/g, '&nbsp;');
       if (foundChordList.length === 0) {
-        result += `${ch} `;
+        result += `${ch}`;
         continue;
       }
       result +=
         `<span class="parsed-chord" id="${coords[0]}-${coords[1]}" style="color: green;">` +
         ch.charAt(0).toUpperCase() +
         ch.slice(1) +
-        "</span> ";
+        "</span>";
     }
     result += "<br>";
   }
@@ -269,15 +271,16 @@ function transpose(len) {
           '<span style="color: green;"><b>' +
           temp_result.charAt(0).toUpperCase() +
           temp_result.slice(1) +
-          "</b></span> ";
+          "</b></span>";
       } else {
-        result += `${ch} `;
+        ch = ch.replace(/\s/g, '&nbsp;');
+        result += `${ch}`;
         continue;
       }
     }
     result += "<br>";
   }
-  result = result.replace(/\s\/\s/g, "/");
+  result = result.replace(/&nbsp;\/&nbsp;/g, "/");
   document.getElementById("result").innerHTML = result;
 
   document.getElementById("transposed-by").innerHTML = `${
