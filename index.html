@@ -18,148 +18,170 @@
 
 <body>
     <div class="container mt-3">
-        <section class="jumbotron">
+        <!-- Header -->
+        <header class="jumbotron">
             <h1 class="text-center">TRANSPONATOR</h1>
             <p class="text-center">Transpose to your heart's desire</p>
-        </section>
-        <section class="jumbotron">
-            <p>
-            <ol>
-                <li> Enter space-separated chords (e.g. Em G# D7) or paste in the entire song lyric with the chords.
-                    Upper-/lowercase is irrelevant.</li>
-                <li> If needed, add custom chord suffixes.</li>
-                <li> Click on "Parse" to highlight all valid chords.</li>
-                <li> If characters have been falsely highlighted as chords, click on them to de-select them.</li>
-                <li> Click on "Transpose up/down".</li>
-                <li> Click the "Copy" button to copy the result.</li>
-            </ol>
-            Supported chord types:
-            </p>
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <ul>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> major (C D D# ...)</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> minor (Cm Dm D#m ...)</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> 7th chord major (C7 C#7 ...)</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> 7th chord minor (Cm7 C#m7 ...)</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> suspended chords (Csus C#sus ...)</li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-6">
-                    <ul>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> sus2 chords (Csus2 C#sus2 ...)</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> sus4 chords (Csus4 C#sus4 ...)</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> min6 chords (Cmin6 or Cm6 ...)</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> maj6 chords (Cmaj6 C#maj6 ...)</li>
-                        <li><i class="fa fa-check" aria-hidden="true"></i> <mark><a href="/" data-toggle="modal"
-                                    data-target="#suffix-modal" onclick="focusModal()">... or add a custom
-                                    suffix!</a></mark></li>
-                    </ul>
-                </div>
-            </div>
-            <div>
-                <h6>Custom suffixes:</h4>
-                    <div id="custom-suffixes"></div>
-            </div>
-        </section>
+        </header>
 
-        <!-- Modal -->
-        <div class="modal fade" id="suffix-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add custom suffixes</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <!-- Main sections -->
+        <main>
+            <!-- Explanatory section -->
+            <section class="jumbotron">
+                <p>
+                <ol>
+                    <li> Enter space-separated chords (e.g. Em G# D7) or paste in the entire song lyric with the chords.
+                        Upper-/lowercase is irrelevant.</li>
+                    <li> If needed, add custom chord suffixes.</li>
+                    <li> Click on "Parse" to highlight all valid chords.</li>
+                    <li> If characters have been falsely highlighted as chords, click on them to de-select them.</li>
+                    <li> Click on "Transpose up/down".</li>
+                    <li> Click the "Copy" button to copy the result.</li>
+                </ol>
+                Supported chord types:
+                </p>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <ul>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> major (C D D# ...)</li>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> minor (Cm Dm D#m ...)</li>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> 7th chord major (C7 C#7 ...)</li>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> 7th chord minor (Cm7 C#m7 ...)</li>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> suspended chords (Csus C#sus ...)</li>
+                        </ul>
                     </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="form-group suffix">
-                                <label for="suffix-input">Suffix:</label>
-                                <div class="d-flex flex-row">
-                                    <input type="text" class="form-control" name="suffix-input" id="suffix-input"
-                                        aria-describedby="helpId" placeholder="e.g. sus2" maxlength="10">
-                                    <button type="button" class="btn btn-success ml-1" id="save-suffix">Add</button>
+                    <div class="col-12 col-md-6">
+                        <ul>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> sus2 chords (Csus2 C#sus2 ...)</li>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> sus4 chords (Csus4 C#sus4 ...)</li>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> min6 chords (Cmin6 or Cm6 ...)</li>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> maj6 chords (Cmaj6 C#maj6 ...)</li>
+                            <li><i class="fa fa-check" aria-hidden="true"></i> <mark><a href="/" data-toggle="modal"
+                                        data-target="#suffix-modal" onclick="focusModal()">... or add a custom
+                                        suffix!</a></mark></li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h6>Custom suffixes:</h4>
+                        <div id="custom-suffixes"></div>
+                </div>
+            </section>
+
+            <!-- Modal to add custom suffixes -->
+            <div class="modal fade" id="suffix-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add custom suffixes</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="form-group suffix">
+                                    <label for="suffix-input">Suffix:</label>
+                                    <div class="d-flex flex-row">
+                                        <!-- New suffix input field and Add button -->
+                                        <input type="text" class="form-control" name="suffix-input" id="suffix-input"
+                                            aria-describedby="helpId" placeholder="e.g. sus2" maxlength="10">
+                                        <button type="button" class="btn btn-success ml-1" id="save-suffix">Add</button>
+                                    </div>
+                                    <small id="helpId" class="form-text text-muted">Max 10 suffixes, max 10 characters
+                                        each,
+                                        no spaces</small>
                                 </div>
-                                <small id="helpId" class="form-text text-muted">Max 10 suffixes, max 10 characters each, no spaces</small>
-                            </div>
 
-                            <div id="table-div">
-                                <table class="table" id="result-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Added suffixes</th>
-                                            <th>Remove</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="suffix-list">
-                                    </tbody>
-                                </table>
+                                <!-- Table with added suffixes and Remove buttons -->
+                                <div id="table-div">
+                                    <table class="table" id="result-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Added suffixes</th>
+                                                <th>Remove</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="suffix-list">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"
-                            onclick="updateCustoms()">Save & Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <section>
-            <h3>Enter your chords below:</h3>
-            <div class="chord-transpo row align-items-center">
-                <div class="col-12 col-md-9">
-                    <form>
-                        <div class="form-group">
-                            <label for="chord-entry">
-                                <p class="d-none">Enter chords here:</p>
-                            </label>
-                            <textarea class="form-control focus-ring rounded-left" id="chord-entry" rows="7"></textarea>
+                        <!-- Modal Save & Close button -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                onclick="updateCustoms()">Save & Close</button>
                         </div>
-                    </form>
-                </div>
-                <div class="col-12 col-md-3 justify-content-around">
-                    <div
-                        class="btn-cont my-auto d-flex flex-column justify-content-around align-items-center align-self-stretch">
-                        <button name="parse-entry" id="parse-entry" class="btn btn-primary align-self-stretch my-1"
-                            href="#" role="button">Parse</button>
-                        <button name="transpose-up" id="transpose-up" class="btn btn-info align-self-stretch my-1"
-                            href="#" role="button">Transpose up</button>
-                        <button name="transpose-down" id="transpose-down" class="btn btn-info align-self-stretch my-1"
-                            href="#" role="button">Transpose down</button>
                     </div>
                 </div>
             </div>
-            <div class="jumbotron d-flex flex-column align-items-center" id="bottom-result">
-                <div id="transposed-by">0</div>
-                <p id="result">RESULT</p>
-                <button name="copy-result" id="copy-result" class="btn btn-warning my-1" href="#" role="button"><i
-                        class="fa fa-copy" aria-hidden="true"></i></button>
 
-            </div>
+            <section>
 
+                <!-- Chords input field -->
 
-            <footer>
-                <p class="jumbotron text-center">2024, created by Vasilika Schnitzer</p>
-
-                <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"
-                    style="position: fixed; bottom: 0; right: 10px;" data-animation="true" data-autohide="true"
-                    data-delay="3000">
-                    <div class="toast-header bg-success">
-                        <strong class="mr-auto">Copy successful</strong>
-                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                <h3>Enter your chords below:</h3>
+                <div class="chord-transpo row align-items-center">
+                    <div class="col-12 col-md-9">
+                        <form>
+                            <div class="form-group">
+                                <label for="chord-entry">
+                                    <p class="d-none">Enter chords here:</p>
+                                </label>
+                                <textarea class="form-control focus-ring rounded-left" id="chord-entry"
+                                    rows="7"></textarea>
+                            </div>
+                        </form>
                     </div>
-                    <div class="toast-body bg-success">
-                        The transposed chords have been copied!
+
+                    <!-- Buttons Parse and Transpose -->
+                    <div class="col-12 col-md-3 justify-content-around">
+                        <div
+                            class="btn-cont my-auto d-flex flex-column justify-content-around align-items-center align-self-stretch">
+                            <button name="parse-entry" id="parse-entry" class="btn btn-primary align-self-stretch my-1"
+                                href="#" role="button">Parse</button>
+                            <button name="transpose-up" id="transpose-up" class="btn btn-info align-self-stretch my-1"
+                                href="#" role="button">Transpose up</button>
+                            <button name="transpose-down" id="transpose-down"
+                                class="btn btn-info align-self-stretch my-1" href="#" role="button">Transpose
+                                down</button>
+                        </div>
                     </div>
                 </div>
 
-            </footer>
+                <!-- Result section -->
+                <div class="jumbotron d-flex flex-column align-items-center" id="bottom-result">
+                    <div id="transposed-by">0</div>
+                    <p id="result">RESULT</p>
+                    <button name="copy-result" id="copy-result" class="btn btn-warning my-1" href="#" role="button"><i
+                            class="fa fa-copy" aria-hidden="true"></i></button>
+
+                </div>
+        </main>
+        <!-- Footer -->
+        <footer>
+            <p class="jumbotron text-center">2024, created by Vasilika Schnitzer</p>
+
+            <!-- Toast for successful copying  -->
+            <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                style="position: fixed; bottom: 0; right: 10px;" data-animation="true" data-autohide="true"
+                data-delay="3000">
+                <div class="toast-header bg-success">
+                    <strong class="mr-auto">Copy successful</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body bg-success">
+                    The transposed chords have been copied!
+                </div>
+            </div>
+
+        </footer>
     </div>
 
 
