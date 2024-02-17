@@ -291,9 +291,10 @@ function transpose(len) {
 // TODO: add copy function
 function copyResult() {
   let plainText = document.getElementById("result").innerText;
+  plainText = plainText.replace(/ /g, " ");
   const type = "text/html";
   const typePlain = "text/plain";
-  const text = document.getElementById("result").innerHTML;
+  let text = document.getElementById("result").innerHTML;
   const blob = new Blob([text], { type: type });
   const blobPlain = new Blob([plainText], { type: typePlain });
   const data = [

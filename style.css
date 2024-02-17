@@ -14,6 +14,7 @@ ul {
   min-height: 18rem;
   padding: 20px 20px;
   font-size: 1.5em;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 #parse-entry {
@@ -74,6 +75,7 @@ ul {
 #result {
   margin-top: 1rem;
   font-size: 1.5rem;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .parsed-chord {
