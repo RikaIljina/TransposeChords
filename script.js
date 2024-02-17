@@ -27,7 +27,8 @@ document
   .getElementById("transpose-down")
   .addEventListener("click", transposeDown);
 document.getElementById("chord-entry").addEventListener("input", resetResult);
-document.getElementById("save-suffix").addEventListener("click", saveSuffix);
+$("#save-suffix").on("click", saveSuffix);
+//document.getElementById("save-suffix").addEventListener("click", saveSuffix);
 document.getElementById("parse-entry").addEventListener("click", parseEntry);
 document.getElementById("copy-result").addEventListener("click", copyResult);
 
@@ -69,7 +70,10 @@ function focusModal() {
 
 function saveSuffix() {
   let listLen = 13;
-  newSuffix = document.getElementById("suffix-input").value.toLowerCase().trim();
+  newSuffix = document
+    .getElementById("suffix-input")
+    .value.toLowerCase()
+    .trim();
   if (
     newSuffix === "" ||
     newSuffix.includes(" ") ||
@@ -176,9 +180,9 @@ function parseEntry() {
   for (j = 0; j < inputRows.length; j++) {
     // split the lines by spaces, remove all redundant spaces AND line breaks
     inputCharsList = inputRows[j].replace(/\//g, " / ").split(/(\s+)/);
-      // .trim()
-      // .replace(/\//g, " / ")
-      // .split(" "); //       .replace(/\s+/g, " ")
+    // .trim()
+    // .replace(/\//g, " / ")
+    // .split(" "); //       .replace(/\s+/g, " ")
     inputRows[j] = inputCharsList;
     // Check each list element to see if it's in the chord lists
     for (let [idx, ch] of inputCharsList.entries()) {
@@ -192,7 +196,7 @@ function parseEntry() {
           break;
         }
       }
-      ch = ch.replace(/\s/g, '&nbsp;');
+      ch = ch.replace(/\s/g, "&nbsp;");
       if (foundChordList.length === 0) {
         result += `${ch}`;
         continue;
@@ -273,7 +277,7 @@ function transpose(len) {
           temp_result.slice(1) +
           "</b></span>";
       } else {
-        ch = ch.replace(/\s/g, '&nbsp;');
+        ch = ch.replace(/\s/g, "&nbsp;");
         result += `${ch}`;
         continue;
       }
@@ -308,7 +312,6 @@ function copyResult() {
   // copyText.setSelectionRange(0, 99999); // For mobile devices
 
   // Copy the text inside the text field
-  //navigator.clipboard.write(data);
   const copyContent = async () => {
     try {
       navigator.clipboard
